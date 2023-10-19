@@ -149,9 +149,22 @@ TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 
 TBitField TBitField::operator&(const TBitField &bf) // операция "и"
 {
-    return FAKE_BITFIELD;
-}
+    
+if (BitLen != bf.BitLen) {
+        // You may want to handle this case according to your needs, like throwing an exception.
+    }
 
+    // Create a new bit field with the same length
+    TBitField result(BitLen);
+
+    // Perform the AND operation element-wise
+    for (int i = 0; i < MemLen; i++) {
+        result.pMem[i] = pMem[i] & bf.pMem[i];
+    }
+
+    return result;
+
+}
 TBitField TBitField::operator~(void) // отрицание
 {
     return FAKE_BITFIELD;
