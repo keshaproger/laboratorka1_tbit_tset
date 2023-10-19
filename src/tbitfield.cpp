@@ -87,7 +87,17 @@ int TBitField::GetBit(const int n) const // получить значение б
 
 TBitField& TBitField::operator=(const TBitField &bf) // присваивание
 {
-    return FAKE_BITFIELD;
+     (BitLen != bf.BitLen) {
+        return 0;  // Bit fields have different lengths, not equal
+    }
+
+    for (int i = 0; i < MemLen; i++) {
+        if (pMem[i] != bf.pMem[i]) {
+            return 0;  // Mismatch found, bit fields are not equal
+        }
+    }
+
+    return 1;
 }
 
 int TBitField::operator==(const TBitField &bf) const // сравнение
