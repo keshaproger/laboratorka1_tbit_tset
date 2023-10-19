@@ -51,7 +51,12 @@ int TBitField::GetMemIndex(const int n) const // индекс Мем для би
 
 TELEM TBitField::GetMemMask(const int n) const // битовая маска для бита n
 {
-    return FAKE_INT;
+    if (n < 0 || n >= BitLen) {
+        // Handle an out-of-range index, you can throw an exception or handle it as needed
+    }
+
+    int offset = n % (8 * sizeof(TELEM));
+    return static_cast<TELEM>(1) << offset
 }
 
 // доступ к битам битового поля
