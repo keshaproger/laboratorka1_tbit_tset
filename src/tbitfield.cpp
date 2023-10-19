@@ -43,7 +43,7 @@ TBitField::~TBitField()
 int TBitField::GetMemIndex(const int n) const // индекс Мем для бита n
 {
     if (n < 0 || n >= BitLen) {
-        // Handle an out-of-range index, you can throw an exception or handle it as needed
+        throw out_of_range("Index out of range"); 
     }
 
     return n / (8 * sizeof(TELEM));
@@ -52,7 +52,7 @@ int TBitField::GetMemIndex(const int n) const // индекс Мем для би
 TELEM TBitField::GetMemMask(const int n) const // битовая маска для бита n
 {
     if (n < 0 || n >= BitLen) {
-        // Handle an out-of-range index, you can throw an exception or handle it as needed
+       throw out_of_range("Index out of range"); 
     }
 
     int offset = n % (8 * sizeof(TELEM));
@@ -69,33 +69,33 @@ int TBitField::GetLength(void) const // получить длину (к-во б�
 void TBitField::SetBit(const int n) // установить бит
 {
     if (n < 0 || n >= BitLen) {
-        throw out_of_range("Index out of range");  // Throw an exception for out-of-range index
+        throw out_of_range("Index out of range"); 
     } else {
-        int memIndex = GetMemIndex(n);  // Calculate the index in pMem
-        TELEM memMask = GetMemMask(n);  // Calculate the bit mask
-        pMem[memIndex] |= memMask;      // Set the bit to 1
+        int memIndex = GetMemIndex(n);  
+        TELEM memMask = GetMemMask(n);  
+        pMem[memIndex] |= memMask; 1
     }
 }
 
 void TBitField::ClrBit(const int n) // очистить бит
 {
     if (n < 0 || n >= BitLen) {
-        // Handle an out-of-range index, you can throw an exception or handle it as needed
+         throw out_of_range("Index out of range")
     } else {
-        int memIndex = GetMemIndex(n);  // Calculate the index in pMem
-        TELEM memMask = GetMemMask(n);  // Calculate the bit mask
-        pMem[memIndex] &= ~memMask;      // Clear the bit (set it to 0)
+        int memIndex = GetMemIndex(n);  m
+        TELEM memMask = GetMemMask(n);  
+        pMem[memIndex] &= ~memMask;     
     }
 }
 
 int TBitField::GetBit(const int n) const // получить значение бита
 {
     if (n < 0 || n >= BitLen) {
-        throw out_of_range("Index out of range");  // Throw an exception for out-of-range index
+        throw out_of_range("Index out of range"); 
     } else {
-        int memIndex = GetMemIndex(n);  // Calculate the index in pMem
-        TELEM memMask = GetMemMask(n);  // Calculate the bit mask
-        return (pMem[memIndex] & memMask) != 0;  // Return 1 if the bit is set, 0 if it's clear
+        int memIndex = GetMemIndex(n); 
+        TELEM memMask = GetMemMask(n); 
+        return (pMem[memIndex] & memMask) != 0; 
     }
 }
 
@@ -105,20 +105,12 @@ TBitField& TBitField::operator=(const TBitField &bf) // присваивание
 {
      
 if (this == &bf) {
-        return *this;  // Check for self-assignment
+        return *this;  
     }
-
-    // Deallocate the current memory
     delete[] pMem;
-
-    // Copy the BitLen and MemLen from the source bit field 'bf'
     BitLen = bf.BitLen;
     MemLen = bf.MemLen;
-
-    // Allocate new memory for pMem
     pMem = new TELEM[MemLen];
-
-    // Copy the contents of 'bf.pMem' into the new 'pMem'
     for (int i = 0; i < MemLen; i++) {
         pMem[i] = bf.pMem[i];
     }
@@ -129,15 +121,13 @@ if (this == &bf) {
 int TBitField::operator==(const TBitField &bf) const // сравнение
 {
     (BitLen != bf.BitLen) {
-        return 0;  // Bit fields have different lengths, not equal
+        return 0; 
     }
-
     for (int i = 0; i < MemLen; i++) {
         if (pMem[i] != bf.pMem[i]) {
-            return 0;  // Mismatch found, bit fields are not equal
+            return 0; 
         }
     }
-
     return 1;
 }
 
@@ -149,47 +139,30 @@ int TBitField::operator!=(const TBitField &bf) const // сравнение
 TBitField TBitField::operator|(const TBitField &bf) // операция "или"
 {
     if (BitLen != bf.BitLen) {
-        // You may want to handle this case according to your needs, like throwing an exception.
     }
-
-    // Create a new bit field with the same length
     TBitField result(BitLen);
-
-    // Perform the OR operation element-wise
     for (int i = 0; i < MemLen; i++) {
         result.pMem[i] = pMem[i] | bf.pMem[i];
     }
-
     return result;
 }
 
 TBitField TBitField::operator&(const TBitField &bf) // операция "и"
-{
-    
+{  
 if (BitLen != bf.BitLen) {
-        // You may want to handle this case according to your needs, like throwing an exception.
     }
-
-    // Create a new bit field with the same length
     TBitField result(BitLen);
-
-    // Perform the AND operation element-wise
     for (int i = 0; i < MemLen; i++) {
         result.pMem[i] = pMem[i] & bf.pMem[i];
     }
-
-    return result;
-
+    return result
 }
 TBitField TBitField::operator~(void) // отрицание
 {
     TBitField result(BitLen);
-
-    // Perform the NOT operation element-wise
     for (int i = 0; i < MemLen; i++) {
         result.pMem[i] = ~pMem[i];
     }
-
     return result;
 }
 
@@ -200,7 +173,6 @@ istream &operator>>(istream &istr, TBitField &bf) // ввод
     or (int i = 0; i < bf.MemLen; i++) {
         istr >> bf.pMem[i];
     }
-    
     return istr;
 }
 
@@ -209,6 +181,5 @@ ostream &operator<<(ostream &ostr, const TBitField &bf) // вывод
     for (int i = 0; i < bf.MemLen; i++) {
         ostr << bf.pMem[i] << " ";
     }
-    
     return ostr;
 }
