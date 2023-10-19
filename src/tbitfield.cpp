@@ -59,6 +59,13 @@ int TBitField::GetLength(void) const // получить длину (к-во б�
 
 void TBitField::SetBit(const int n) // установить бит
 {
+    if (n < 0 || n >= BitLen) {
+        throw out_of_range("Index out of range");  // Throw an exception for out-of-range index
+    } else {
+        int memIndex = GetMemIndex(n);  // Calculate the index in pMem
+        TELEM memMask = GetMemMask(n);  // Calculate the bit mask
+        pMem[memIndex] |= memMask;      // Set the bit to 1
+    }
 }
 
 void TBitField::ClrBit(const int n) // очистить бит
