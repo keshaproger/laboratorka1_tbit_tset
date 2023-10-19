@@ -79,6 +79,13 @@ void TBitField::SetBit(const int n) // установить бит
 
 void TBitField::ClrBit(const int n) // очистить бит
 {
+    if (n < 0 || n >= BitLen) {
+        // Handle an out-of-range index, you can throw an exception or handle it as needed
+    } else {
+        int memIndex = GetMemIndex(n);  // Calculate the index in pMem
+        TELEM memMask = GetMemMask(n);  // Calculate the bit mask
+        pMem[memIndex] &= ~memMask;      // Clear the bit (set it to 0)
+    }
 }
 
 int TBitField::GetBit(const int n) const // получить значение бита
