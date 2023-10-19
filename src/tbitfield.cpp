@@ -74,7 +74,18 @@ void TBitField::ClrBit(const int n) // очистить бит
 
 int TBitField::GetBit(const int n) const // получить значение бита
 {
-  return FAKE_INT;
+    Certainly, here's the code for the GetBit method of the TBitField class:
+
+cpp
+Copy code
+int TBitField::GetBit(const int n) const {
+    if (n < 0 || n >= BitLen) {
+        throw out_of_range("Index out of range");  // Throw an exception for out-of-range index
+    } else {
+        int memIndex = GetMemIndex(n);  // Calculate the index in pMem
+        TELEM memMask = GetMemMask(n);  // Calculate the bit mask
+        return (pMem[memIndex] & memMask) != 0;  // Return 1 if the bit is set, 0 if it's clear
+    }
 }
 
 // битовые операции
