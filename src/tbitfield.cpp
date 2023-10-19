@@ -88,6 +88,26 @@ int TBitField::GetBit(const int n) const // получить значение б
 TBitField& TBitField::operator=(const TBitField &bf) // присваивание
 {
      
+if (this == &bf) {
+        return *this;  // Check for self-assignment
+    }
+
+    // Deallocate the current memory
+    delete[] pMem;
+
+    // Copy the BitLen and MemLen from the source bit field 'bf'
+    BitLen = bf.BitLen;
+    MemLen = bf.MemLen;
+
+    // Allocate new memory for pMem
+    pMem = new TELEM[MemLen];
+
+    // Copy the contents of 'bf.pMem' into the new 'pMem'
+    for (int i = 0; i < MemLen; i++) {
+        pMem[i] = bf.pMem[i];
+    }
+
+    return *this;
 }
 
 int TBitField::operator==(const TBitField &bf) const // сравнение
