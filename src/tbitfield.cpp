@@ -167,13 +167,24 @@ if (BitLen != bf.BitLen) {
 }
 TBitField TBitField::operator~(void) // отрицание
 {
-    return FAKE_BITFIELD;
+    TBitField result(BitLen);
+
+    // Perform the NOT operation element-wise
+    for (int i = 0; i < MemLen; i++) {
+        result.pMem[i] = ~pMem[i];
+    }
+
+    return result;
 }
 
 // ввод/вывод
 
 istream &operator>>(istream &istr, TBitField &bf) // ввод
 {
+    or (int i = 0; i < bf.MemLen; i++) {
+        istr >> bf.pMem[i];
+    }
+    
     return istr;
 }
 
