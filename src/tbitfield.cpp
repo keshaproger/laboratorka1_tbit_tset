@@ -87,7 +87,12 @@ int TBitField::GetBit(const int n) const // получить значение б
 
 TBitField& TBitField::operator=(const TBitField &bf) // присваивание
 {
-     (BitLen != bf.BitLen) {
+     
+}
+
+int TBitField::operator==(const TBitField &bf) const // сравнение
+{
+    (BitLen != bf.BitLen) {
         return 0;  // Bit fields have different lengths, not equal
     }
 
@@ -100,14 +105,9 @@ TBitField& TBitField::operator=(const TBitField &bf) // присваивание
     return 1;
 }
 
-int TBitField::operator==(const TBitField &bf) const // сравнение
-{
-  return FAKE_INT;
-}
-
 int TBitField::operator!=(const TBitField &bf) const // сравнение
 {
-  return FAKE_INT;
+    return !(*this == bf);
 }
 
 TBitField TBitField::operator|(const TBitField &bf) // операция "или"
